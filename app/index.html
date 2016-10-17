@@ -1,0 +1,32 @@
+<html>
+  <head>
+    <title>GitHub Juke</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Angular Material style sheet -->
+    <link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/angular_material/1.1.0/angular-material.min.css">
+  </head>
+
+  <body ng-app='Juke' ng-cloak>
+
+    <md-content>
+      <section layout='row' layout-sm='column' layout-align='center center' layout-wrap>
+        <md-button class='md-fab' aria-label='Login with GitHub'>
+          <md-icon md-svg-src='assets/icons/mark-github.svg' style='width: 36px; height: 36px;'></md-icon>
+        </md-button>
+      </section>
+    </md-content>
+
+    <!-- Angular Material requires Angular.js Libraries -->
+    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular.min.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular-animate.min.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular-aria.min.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular-messages.min.js"></script>
+
+    <!-- Angular Material Library -->
+    <script src="http://ajax.googleapis.com/ajax/libs/angular_material/1.1.0/angular-material.min.js"></script>
+
+    <!-- Your application bootstrap  -->
+    <script src='js/JukeController.js'></script>
+
+  </body>
+</html>
