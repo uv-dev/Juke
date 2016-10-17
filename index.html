@@ -8,11 +8,10 @@
 
   <body ng-app='Juke' ng-cloak>
 
-    <md-content>
+    <md-content ng-controller='MainController'>
       <section layout='row' layout-sm='column' layout-align='center center' layout-wrap>
-        <md-button class='md-fab' aria-label='Login with GitHub'>
+        <md-button class='md-fab' aria-label='Login with GitHub' ng-click='githubLogin()'>
           <md-icon md-svg-src='assets/icons/mark-github.svg'
-            ng-click='githubLogin()'
             style='width: 36px; height: 36px;'></md-icon>
         </md-button>
       </section>
