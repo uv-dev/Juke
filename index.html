@@ -11,7 +11,9 @@
     <md-content>
       <section layout='row' layout-sm='column' layout-align='center center' layout-wrap>
         <md-button class='md-fab' aria-label='Login with GitHub'>
-          <md-icon md-svg-src='assets/icons/mark-github.svg' style='width: 36px; height: 36px;'></md-icon>
+          <md-icon md-svg-src='assets/icons/mark-github.svg'
+            ng-click='githubLogin()'
+            style='width: 36px; height: 36px;'></md-icon>
         </md-button>
       </section>
     </md-content>
@@ -24,6 +26,9 @@
 
     <!-- Angular Material Library -->
     <script src="http://ajax.googleapis.com/ajax/libs/angular_material/1.1.0/angular-material.min.js"></script>
+
+    <!-- Satellizer CDN -->
+    <script src="https://cdn.jsdelivr.net/satellizer/0.15.5/satellizer.min.js"></script>
 
     <!-- Your application bootstrap  -->
     <script src='js/JukeController.js'></script>
