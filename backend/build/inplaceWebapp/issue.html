@@ -1,0 +1,38 @@
+<pre>{{issue.body}}</pre>
+<hr />
+<p>{{issue.state}}</p>
+<p ng-if="issue.locked"><b><i>this issue is locked!</i></b></p>
+<p>last updated at {{issue.updated_at}}</p>
+
+<h2>assignees</h2>
+<span ng-if="!assignees.length">no assignees yet</span>
+<ul>
+  <li ng-repeat="assignee in assignees" class="assignees">{{assignee.login}}</li>
+</ul>
+
+<h2>events</h2>
+<span ng-if="!events.length">no events</span>
+<ul>
+  <li ng-repeat="e in events" class="events">
+    <p>
+      <span><i>{{e.event}}</i></span>
+      <span>by <b>{{e.actor.login}}</b></span>
+      <span>at <b>{{e.created_at}}</b></span>
+    </p>
+  </li>
+</ul>
+
+<h2>comments</h2>
+<span ng-if="!comments.length">no comments yet</span>
+<ul>
+  <li ng-repeat="comment in comments" class="comments">
+    <p>
+      <span>{{comment.body}}</span>
+      <br />
+      <span>by <b>{{comment.user.login}}</b></span>
+      <span>at <b>{{comment.created_at}}</b></span>
+      <br />
+      <span>last updated at {{comment.updated_at}}</span>
+    </p>
+  </li>
+</ul>

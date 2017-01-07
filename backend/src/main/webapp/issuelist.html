@@ -1,0 +1,10 @@
+<ul>
+  <li ng-repeat="issue in issues" class="issues">
+    <p>
+      <a href="{{issue.juke_link}}">{{issue.title}}</a>
+      <span>{{issue.state}}</span>
+      <br />
+      <span>last updated at {{issue.updated_at}}</span>
+    </p>
+  </li>
+</ul>

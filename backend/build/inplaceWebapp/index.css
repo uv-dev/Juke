@@ -1,0 +1,48 @@
+html, body {
+    background-color: #ccc;
+}
+
+.repos_wrap {
+    max-width: 1599px; /* puts max 3 cards in a row */
+
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.repos {
+    width: 400px;
+}
+
+.md-headline a {
+    display: inline-block;
+    
+    text-decoration: none;
+    
+    color: blue;
+}
+
+.md-headline a:hover {
+    text-decoration: underline;
+}
+
+.footer {
+    color: rgba(0,0,0,0.54);
+    font-size: 15px;
+
+    text-align: right;
+    display: block;
+}
+
+.issue_count {
+    margin-bottom: 5px;
+}
+
+.circleback {
+    padding: 2px 5px;
+    
+    background-color: grey;
+
+    font-weight: bold;
+
+    color: white;
+}
