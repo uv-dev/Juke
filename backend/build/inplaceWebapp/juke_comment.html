@@ -1,0 +1,12 @@
+<div layout="row" class="comment-info">
+  <img class="avatar-mid" flex="none" ng-src="{{data.user.avatar_url}}" alt="{{data.user.login}}" />
+  <div layout="column" flex="grow">
+    <span>
+      by <b>{{data.user.login}}</b>
+      <u><show-on-hover on-hover="{{data.juke_created_at}}" on-leave="{{data.juke_created}}"></show-on-hover></u>
+      <span ng-if="data.juke_edited">&nbsp;&#x2022;&nbsp; <i>edited</i></span>
+    </span>
+    <p>{{data.body}}</p>
+    <span class="vertical-divider"></span>
+  </div>
+</div>
