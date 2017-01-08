@@ -1,10 +1,46 @@
-<ul>
-  <li ng-repeat="issue in issues" class="issues">
-    <p>
-      <a href="{{issue.juke_link}}">{{issue.title}}</a>
-      <span>{{issue.state}}</span>
-      <br />
-      <span>last updated at {{issue.updated_at}}</span>
-    </p>
-  </li>
-</ul>
+<div layout="column" layout-fill>
+  <md-toolbar>
+    <div class="md-toolbar-tools">
+      <md-button href="#!">Back</md-button>
+      <h2 md-truncate flex="noshrink">{{owner}} / {{repo}}</h2>
+    </div>
+  </md-toolbar>
+</div>
+
+<div layout="column" class="top_padding">
+  <div layout="row">
+    <md-input-container class="search_bar">
+      <input ng-model="keyword" placeholder="Search Issues by Title" type="text"></input>
+    </md-input-container>
+    <md-input-container>
+      <md-select placeholder="Filter by Status" multiple ng-model="filters" md-selected-text="filter_text()">
+	<md-option ng-click="toggle_all($event)" ng-value="0">All</md-option>
+	<md-option ng-value="v" ng-repeat="(k, v) in codes">{{k}}</md-option>
+      </md-select>
+    </md-input-container>
+  </div>
+  <md-table-container>
+    <table md-table class="issue_table" md-progress="attendez">
+      <thead md-head md-order="orderby">
+	<tr md-row>
+	  <th md-column md-order-by="title">Issue Title</th>
+	  <th md-column class="issue_time" md-order-by="updated_at">Update</th>
+	  <th md-column class="issue_status" md-order-by="juke_status">Status</th>
+	</tr>
+      </thead>
+      <tbody md-body>
+	<tr md-row ng-repeat="issue in showing | orderBy: orderby | filter: { juke_status_code: weeder } : weedfunc track by issue.id">
+	  <td md-cell class="md-headline">
+	    <a href="{{issue.juke_link}}">{{issue.title}}</a>
+	  </td>
+	  <td md-cell
+	      ng-mouseenter="issue.juke_rel_time = false"
+	      ng-mouseleave="issue.juke_rel_time = true">
+	    {{issue.juke_rel_time ? issue.juke_updated : issue.juke_updated_at}}
+	  </td>
+	  <td md-cell>{{issue.juke_status}}</td>
+	</tr>
+      </tbody>
+    </table>
+  </md-table-container>
+</div>

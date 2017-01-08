@@ -2,6 +2,10 @@ html, body {
     background-color: #ccc;
 }
 
+.top_padding {
+    padding-top: 20px;
+}
+
 .repos_wrap {
     max-width: 1599px; /* puts max 3 cards in a row */
 
@@ -45,4 +49,29 @@ html, body {
     font-weight: bold;
 
     color: white;
+}
+
+.search_bar {
+    width: 70%;
+
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.search_bar .md-errors-spacer {
+    display: none;
+}
+
+.issue_table {
+    font-size: 30px;
+}
+
+.issue_time {
+    min-width: 160px;
+    width: 15%;
+}
+
+.issue_status {
+    min-width: 100px;
+    width: 15%;
 }
