@@ -1,42 +1,45 @@
 <div layout="column" layout-fill>
   <md-toolbar>
     <div class="md-toolbar-tools">
-      <md-button href="#!">Back</md-button>
-      <h2 md-truncate flex="noshrink">{{owner}} / {{repo}}</h2>
+      <md-button href="#!" aria-label="Go Back" class="md-icon-button">
+	<md-icon md-svg-icon="img/ic_arrow_back_white_24px.svg">Go Back</md-icon>
+      </md-button>
+      <h2 md-truncate>{{owner}} / <b>{{repo}}</b></h2>
     </div>
   </md-toolbar>
 </div>
 
 <div layout="column" class="top_padding">
-  <div layout="row">
-    <md-input-container class="search_bar">
+  <div layout="row" layout-align="space-around" class="search_bar">
+    <md-input-container flex="70">
       <input ng-model="keyword" placeholder="Search Issues by Title" type="text"></input>
     </md-input-container>
-    <md-input-container>
-      <md-select placeholder="Filter by Status" multiple ng-model="filters" md-selected-text="filter_text()">
-	<md-option ng-click="toggle_all($event)" ng-value="0">All</md-option>
-	<md-option ng-value="v" ng-repeat="(k, v) in codes">{{k}}</md-option>
+    <md-input-container flex="20">
+      <md-select multiple md-blur-on-close md-no-asterisk="true" ng-model="filters" md-selected-text="filter_text()" aria-label="Status Filter">
+	<md-option ng-click="toggle_all($event)" ng-value ng-selected="all_filters"
+		   ng-class="{ 'md-indeterminate': !all_filters && filters.length }">All</md-option>
+	<md-option ng-value="k" ng-repeat="(k, v) in codes">{{k}}</md-option>
       </md-select>
     </md-input-container>
   </div>
   <md-table-container>
-    <table md-table class="issue_table" md-progress="attendez">
+    <table md-table md-progress="attendez">
       <thead md-head md-order="orderby">
 	<tr md-row>
 	  <th md-column md-order-by="title">Issue Title</th>
-	  <th md-column class="issue_time" md-order-by="updated_at">Update</th>
-	  <th md-column class="issue_status" md-order-by="juke_status">Status</th>
+	  <th md-column width="15%" md-order-by="milestone.title">Milestone</th>
+	  <th md-column width="15%" md-order-by="updated_at">Update</th>
+	  <th md-column width="15%" md-order-by="juke_status">Status</th>
 	</tr>
       </thead>
       <tbody md-body>
-	<tr md-row ng-repeat="issue in showing | orderBy: orderby | filter: { juke_status_code: weeder } : weedfunc track by issue.id">
+	<tr md-row ng-repeat="issue in showing | orderBy: orderby | filter: weedfunc | filter: { title: keyword } track by issue.id">
 	  <td md-cell class="md-headline">
 	    <a href="{{issue.juke_link}}">{{issue.title}}</a>
 	  </td>
-	  <td md-cell
-	      ng-mouseenter="issue.juke_rel_time = false"
-	      ng-mouseleave="issue.juke_rel_time = true">
-	    {{issue.juke_rel_time ? issue.juke_updated : issue.juke_updated_at}}
+	  <td md-cell>{{issue.milestone.title}}</td>
+	  <td md-cell>
+	    <show-on-hover on-hover="{{issue.juke_updated_at}}" on-leave="{{issue.juke_updated}}"></show-on-hover>
 	  </td>
 	  <td md-cell>{{issue.juke_status}}</td>
 	</tr>

@@ -1,5 +1,5 @@
 html, body {
-    background-color: #ccc;
+    background-color: #eaeaea;
 }
 
 .top_padding {
@@ -52,7 +52,9 @@ html, body {
 }
 
 .search_bar {
-    width: 70%;
+    width: 95%;
+    
+    background-color: white;
 
     margin-left: auto;
     margin-right: auto;
@@ -62,16 +64,54 @@ html, body {
     display: none;
 }
 
-.issue_table {
-    font-size: 30px;
+.issue_wrapper {
+    width: 90%;
+    max-width: 1000px;
+
+    margin: 0 auto;
 }
 
-.issue_time {
-    min-width: 160px;
-    width: 15%;
+.issue_info {
+    height: 60px;
+
+    border-bottom: 1px solid #555;
 }
 
-.issue_status {
-    min-width: 100px;
-    width: 15%;
+.avatar-mini {
+    display: inline;
+    
+    width: 16px;
+    height: 16px;
+
+    vertical-align: middle;
+}
+
+.avatar-mid {
+    display: inline;
+
+    width: 50px;
+    height: 50px;
+}
+
+.comment-info {
+    margin-top: 10px;
+}
+
+.comment-info img {
+    margin-right: 15px;
+}
+
+.vertical-divider {
+    margin-top: 10px;
+    border-bottom: 1px solid gray;
+}
+
+.event-info {
+    margin-left: 65px;
+}
+
+.juke-event {
+    margin-top: 10px;
+
+    padding-bottom: 10px;
 }

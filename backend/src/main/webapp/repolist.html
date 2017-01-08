@@ -16,11 +16,10 @@
       <span class="issue_count">
 	<span class="circleback">{{repo.open_issues_count}}</span> open issues
       </span>
-      <span class="footer"
-	    ng-mouseenter="repo.juke_rel_time = false"
-	    ng-mouseleave="repo.juke_rel_time = true">
-	Updated {{repo.juke_rel_time ? repo.juke_updated : repo.juke_updated_at}}
-      </span>
+      <div class="footer">
+	<span>Updated </span>
+	<show-on-hover on-hover="{{repo.juke_updated_at}}" on-leave="{{repo.juke_updated}}"></show-on-hover>
+      </div>
     </md-card-content>
   </md-card>
 </md-container>
