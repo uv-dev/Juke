@@ -6,7 +6,7 @@
       <u><show-on-hover on-hover="{{data.juke_created_at}}" on-leave="{{data.juke_created}}"></show-on-hover></u>
       <span ng-if="data.juke_edited">&nbsp;&#x2022;&nbsp; <i>edited</i></span>
     </span>
-    <p>{{data.body}}</p>
+    <md ng-model="data.body"></md>
     <span class="vertical-divider"></span>
   </div>
 </div>

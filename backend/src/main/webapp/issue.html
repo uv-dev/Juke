@@ -21,8 +21,8 @@
       <md-option ng-repeat="s in statuses" ng-value="s">{{s}}</md-option>
     </md-select>
   </div>
-  <div layout="column">
-    <div class="juke-event" ng-repeat="ev in all_events | orderBy: ev.created_at track by ev.id" ng-switch="ev.juke_event_type">
+  <div layout="column" class="bottom-margin-20">
+    <div class="juke-event" ng-repeat="ev in all_events | orderBy: 'created_at' track by ev.id" ng-switch="ev.juke_event_type">
       <md-juke-event data="ev" ng-switch-when="event"></md-juke-event>
       <md-juke-comment data="ev" ng-switch-when="comment"></md-juke-comment>
     </div>

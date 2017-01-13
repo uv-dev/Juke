@@ -1,4 +1,4 @@
-angular.module('juke', ['ngCookies', 'ngRoute', 'ngMaterial', 'md.data.table'])
+angular.module('juke', ['ngCookies', 'ngRoute', 'ngMaterial', 'md.data.table', 'yaru22.md', 'ngSanitize'])
 
     .constant('baseurl', 'https://api.github.com')
 
@@ -35,53 +35,71 @@ angular.module('juke', ['ngCookies', 'ngRoute', 'ngMaterial', 'md.data.table'])
 	    else
 		return 'N/A';
 	};
-	objs.elaborate_event = function (git_event) {
-	    /* COPIED FROM GitHub API v3 /issues/events/
-
-	      closed
-	      The issue was closed by the actor. When the commit_id is present, it identifies the commit that closed the issue using "closes / fixes #NN" syntax.
-	      reopened
-	      The issue was reopened by the actor.
-	      subscribed
-	      The actor subscribed to receive notifications for an issue.
-	      merged
-	      The issue was merged by the actor. The `commit_id` attribute is the SHA1 of the HEAD commit that was merged.
-	      referenced
-	      The issue was referenced from a commit message. The `commit_id` attribute is the commit SHA1 of where that happened.
-	      mentioned
-	      The actor was @mentioned in an issue body.
-	      assigned
-	      The issue was assigned to the actor.
-	      unassigned
-	      The actor was unassigned from the issue.
-	      labeled
-	      A label was added to the issue.
-	      unlabeled
-	      A label was removed from the issue.
-	      milestoned
-	      The issue was added to a milestone.
-	      demilestoned
-	      The issue was removed from a milestone.
-	      renamed
-	      The issue title was changed.
-	      locked
-	      The issue was locked by the actor.
-	      unlocked
-	      The issue was unlocked by the actor.
-	      head_ref_deleted
-	      The pull request's branch was deleted.
-	      head_ref_restored
-	      The pull request's branch was restored.
-	      review_dismissed
-	      The actor dismissed a review from the pull request.
-	      review_requested
-	      The actor requested review from the subject on this pull request.
-	      review_request_removed
-	      The actor removed the review request for the subject on this pull request.
-	    */
-
-	    return 'yeah, this event happened: ' + git_event.event;
+	objs.bold = function (str) {
+	    return '<b>' + str + '</b>';
 	};
+	objs.elaborate_event = function (ev) {
+	    /* from GitHub API v3 /issues/events/ page */
+	    switch (ev.event) {
+	    case 'closed':
+		return 'closed this issue';
+	    case 'reopened':
+		return 'reopened this issue';
+	    case 'merged':
+		return 'merged this issue in ' + objs.bold(ev.commit_id);
+	    case 'referenced':
+		return 'referenced this issue in ' + objs.bold(ev.commit_id);
+	    case 'assigned':
+		return 'was assigned to this issue';
+	    case 'unassigned':
+		return 'was removed from their assignment';
+	    case 'labeled':
+		return 'added the ' + objs.bold(ev.label.name) + ' label';
+	    case 'unlabeled':
+		return 'removed the ' + objs.bold(ev.label.name) + ' label';
+	    case 'milestoned':
+		return 'added this issue to the ' + objs.bold(ev.milestone.title) + ' milestone';
+	    case 'demilestoned':
+		return 'removed this issue from the ' + objs.bold(ev.milestone.title) + ' milestone';
+	    case 'renamed':
+		return 'changed the title from ' + objs.bold(ev.rename.from) + ' to ' + objs.bold(ev.rename.to);
+	    case 'locked':
+		return 'locked and limited conversation to collaborators';
+	    case 'unlocked':
+		return 'unlocked this conversation';
+	    case 'juke_remilestoned':
+		return 'modified the milestone from ' + objs.bold(ev.milestone.from) + ' to ' + objs.bold(ev.milestone.title);
+	    case 'juke_self_assigned':
+		return 'self-assigned this issue';
+	    case 'juke_self_unassigned':
+		return 'removed their assignement';
+	    default:
+		return null;
+	    };
+	};
+	objs.process_events = function (events) {
+	    // TODO self-(un)assigned
+	    var result = [];
+	    for (var i = 0; i < events.length; i++) {
+		var e = events[i];
+		if (e.event === 'milestoned' && i + 1 < events.length && e.actor.id === events[i+1].actor.id && events[i+1].event === 'demilestoned') {
+		    e.event = 'juke_remilestoned';
+		    e.milestone.from = events[i+1].milestone.title;
+		    i++;
+		} else if (e.event === 'assigned' && e.assignee.id === e.assigner.id) {
+		    e.event = 'juke_self_assigned';
+		} else if (e.event === 'unassigned' && e.assignee.id === e.assigner.id) {
+		    e.event = 'juke_self_unassigned';
+		}
+
+		e.juke_msg = objs.elaborate_event(e);
+		if (e.juke_msg !== null) {
+		    result.push(e);
+		}
+	    }
+	    return result;
+	};
+
 	return objs;
     })
 
@@ -112,9 +130,10 @@ angular.module('juke', ['ngCookies', 'ngRoute', 'ngMaterial', 'md.data.table'])
 	    $scope.repos = res.data;
 	    for (var i = 0; i < $scope.repos.length; i++) {
 		var e = $scope.repos[i];
+		var m = moment(e.updated_at);
 		e.juke_link = '#!/' + e.full_name;
-		e.juke_updated = moment(e.updated_at).fromNow();
-		e.juke_updated_at = moment(e.updated_at).calendar();
+		e.juke_updated = m.fromNow();
+		e.juke_updated_at = m.calendar();
 	    }
 	});
     })
@@ -177,8 +196,9 @@ angular.module('juke', ['ngCookies', 'ngRoute', 'ngMaterial', 'md.data.table'])
 	    $scope.all_issues = res.data;
 	    for (var i = 0; i< $scope.all_issues.length; i++) {
 		var e = $scope.all_issues[i];
-		e.juke_updated = moment(e.updated_at).fromNow();
-		e.juke_updated_at = moment(e.updated_at).calendar();
+		var m = moment(e.updated_at);
+		e.juke_updated = m.fromNow();
+		e.juke_updated_at = m.calendar();
 		e.juke_link = '#!' + $scope.repopath + '/' + e.number;
 		e.juke_status = juke_service.status(e);
 		e.juke_status_code = $scope.codes[e.juke_status];
@@ -196,37 +216,40 @@ angular.module('juke', ['ngCookies', 'ngRoute', 'ngMaterial', 'md.data.table'])
 
 	$scope.statuses = Object.keys(juke_service.status_codes);
 	
-	/* fetch a issue */
+	/* fetch an issue */
 	$scope.path = '/' + $scope.owner + '/' + $scope.repo + '/issues/' + $scope.n;
 	juke_service.git_api('/repos' + $scope.path, function (res) {
 	    var e = res.data;
-	    e.juke_created = moment(e.created_at).fromNow();
-	    e.juke_created_at = moment(e.created_at).calendar();
+	    var m = moment(e.created_at);
 	    e.juke_status = juke_service.status(e);
 	    e.juke_event_type = 'comment';
+	    e.juke_created = m.fromNow();
+	    e.juke_created_at = m.calendar();
 	    $scope.issue = e;
 
 	    $scope.all_events = [$scope.issue];
 	    /* fetch events */
 	    juke_service.git_api($scope.issue.events_url, function (res) {
-		for (var i = 0; i < res.data.length; i++) {
-		    var e = res.data[i];
+		var evs = juke_service.process_events(res.data);
+		for (var i = 0; i < evs.length; i++) {
+		    var e = evs[i];
+		    var m = moment(e.created_at);
 		    e.juke_event_type = 'event';
-		    e.juke_created = moment(e.created_at).fromNow();
-		    e.juke_created_at = moment(e.created_at).calendar();
+		    e.juke_created = m.fromNow();
+		    e.juke_created_at = m.calendar();
 		}
-
-		$scope.all_events.push(...res.data);
+		$scope.all_events.push(...evs);
 	    });
 	    
 	    /* fetch comments */
 	    juke_service.git_api($scope.issue.comments_url, function (res) {
 		for (var i = 0; i < res.data.length; i++) {
 		    var e = res.data[i];
+		    var m = moment(e.created_at);
 		    e.juke_event_type = 'comment';
 		    e.juke_edited = (e.created_at !== e.updated_at);
-		    e.juke_created = moment(e.created_at).fromNow();
-		    e.juke_created_at = moment(e.created_at).calendar();
+		    e.juke_created = m.fromNow();
+		    e.juke_created_at = m.calendar();
 		}
 		$scope.all_events.push(...res.data);
 	    });
@@ -238,7 +261,7 @@ angular.module('juke', ['ngCookies', 'ngRoute', 'ngMaterial', 'md.data.table'])
 	    restrict: 'EA',
 	    scope: { data: '=' },
 	    link: function (scope, elem, attrs) {
-		scope.event_desc = juke_service.elaborate_event(scope.data);
+		
 	    },
 	    templateUrl: 'juke_event.html'
 	};
@@ -249,6 +272,7 @@ angular.module('juke', ['ngCookies', 'ngRoute', 'ngMaterial', 'md.data.table'])
 	    restrict: 'EA',
 	    scope: { data: '=' },
 	    link: function (scope, elem, attrs) {
+		
 	    },
 	    templateUrl: 'juke_comment.html'
 	};
