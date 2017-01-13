@@ -1,0 +1,25 @@
+<md-container layout="row" layout-align="center" class="repos_wrap" layout-wrap>
+  <md-card ng-repeat="repo in repos" class="repos" layout="column" layout-align="space-between">
+    <md-card-header>
+      <md-card-header-text>
+	<div class="md-headline">
+	  <a href="{{repo.juke_link}}">{{repo.name}}</a>
+	  <span class="md-subhead" ng-if="repo.private">(private)</span>
+	</div>
+	<span class="md-subhead">owned by {{repo.owner.login}}</span>
+      </md-card-header-text>
+      <md-card-avatar>
+	<img ng-src="{{repo.owner.avatar_url}}">
+      </md-card-avatar>
+    </md-card-header>
+    <md-card-content layout="column" layout-align="space-between">
+      <span class="issue_count">
+	<span class="circleback">{{repo.open_issues_count}}</span> open issues
+      </span>
+      <div class="footer">
+	<span>Updated </span>
+	<show-on-hover on-hover="{{repo.juke_updated_at}}" on-leave="{{repo.juke_updated}}"></show-on-hover>
+      </div>
+    </md-card-content>
+  </md-card>
+</md-container>

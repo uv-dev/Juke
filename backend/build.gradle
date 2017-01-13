@@ -9,6 +9,7 @@ buildscript {
     }
     dependencies {
         classpath 'com.google.appengine:gradle-appengine-plugin:1.9.46'
+	classpath 'org.akhikhl.gretty:gretty:+'
     }
 }
 
@@ -19,6 +20,7 @@ repositories {
 apply plugin: 'java'
 apply plugin: 'war'
 apply plugin: 'appengine'
+apply plugin: 'org.akhikhl.gretty'
 
 sourceCompatibility = JavaVersion.VERSION_1_8
 targetCompatibility = JavaVersion.VERSION_1_8
@@ -26,6 +28,12 @@ targetCompatibility = JavaVersion.VERSION_1_8
 dependencies {
     appengineSdk 'com.google.appengine:appengine-java-sdk:1.9.46'
     compile 'javax.servlet:servlet-api:2.5'
+}
+
+gretty {
+    port = 8080
+    contextPath = '/'
+    servletContainer = 'jetty9'
 }
 
 appengine {

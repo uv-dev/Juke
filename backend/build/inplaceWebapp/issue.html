@@ -1,0 +1,30 @@
+<div layout="column" layout-fill>
+  <md-toolbar>
+    <div class="md-toolbar-tools">
+      <md-button href="#!/{{owner}}/{{repo}}" aria-label="Go Back" class="md-icon-button">
+	<md-icon md-svg-icon="img/ic_arrow_back_white_24px.svg">Go Back</md-icon>
+      </md-button>
+      <h2 md-truncate>{{owner}} / {{repo}} / <b>{{issue.title}}</b></h2>
+    </div>
+  </md-toolbar>
+</div>
+
+<div class="issue_wrapper">
+  <div layout="row" layout-align="space-between center" class="issue_info">
+    <div>
+      <span>Opened by <b>{{issue.user.login}}</b></span>
+      <u><show-on-hover on-hover="{{issue.juke_created_at}}" on-leave="{{issue.juke_created}}"></show-on-hover></u>
+      <span>&nbsp;&#x2022;&nbsp;</span>
+      <span>{{issue.comments}} comment<span ng-if="issue.comments > 1">s</span></span>
+    </div>
+    <md-select md-blur-on-close ng-model="issue.juke_status" class="md-no-underline" aria-label="Get & Set Issue Status">
+      <md-option ng-repeat="s in statuses" ng-value="s">{{s}}</md-option>
+    </md-select>
+  </div>
+  <div layout="column" class="bottom-margin-20">
+    <div class="juke-event" ng-repeat="ev in all_events | orderBy: 'created_at' track by ev.id" ng-switch="ev.juke_event_type">
+      <md-juke-event data="ev" ng-switch-when="event"></md-juke-event>
+      <md-juke-comment data="ev" ng-switch-when="comment"></md-juke-comment>
+    </div>
+  </div>
+</div>

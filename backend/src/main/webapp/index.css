@@ -1,0 +1,121 @@
+html, body {
+    background-color: #eaeaea;
+}
+
+.top_padding {
+    padding-top: 20px;
+}
+
+.repos_wrap {
+    max-width: 1599px; /* puts max 3 cards in a row */
+
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.repos {
+    width: 400px;
+}
+
+.md-headline a {
+    display: inline-block;
+    
+    text-decoration: none;
+    
+    color: blue;
+}
+
+.md-headline a:hover {
+    text-decoration: underline;
+}
+
+.footer {
+    color: rgba(0,0,0,0.54);
+    font-size: 15px;
+
+    text-align: right;
+    display: block;
+}
+
+.issue_count {
+    margin-bottom: 5px;
+}
+
+.circleback {
+    padding: 2px 5px;
+    
+    background-color: grey;
+
+    font-weight: bold;
+
+    color: white;
+}
+
+.search_bar {
+    width: 95%;
+    
+    background-color: white;
+
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.search_bar .md-errors-spacer {
+    display: none;
+}
+
+.issue_wrapper {
+    width: 90%;
+    max-width: 1000px;
+
+    margin: 0 auto;
+}
+
+.issue_info {
+    height: 60px;
+
+    border-bottom: 1px solid #555;
+}
+
+.avatar-mini {
+    display: inline;
+    
+    width: 16px;
+    height: 16px;
+
+    vertical-align: middle;
+}
+
+.avatar-mid {
+    display: inline;
+
+    width: 50px;
+    height: 50px;
+}
+
+.comment-info {
+    margin-top: 10px;
+}
+
+.comment-info img {
+    margin-right: 15px;
+}
+
+.vertical-divider {
+    margin-top: 10px;
+    border-bottom: 1px solid gray;
+}
+
+.event-info {
+    margin-left: 65px;
+}
+
+.juke-event {
+    margin-top: 10px;
+
+    padding-bottom: 10px;
+}
+
+.bottom-margin-20 {
+    margin-bottom: 20px;
+}
